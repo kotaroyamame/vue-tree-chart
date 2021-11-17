@@ -103,6 +103,14 @@ export default {
     dataset: {
       type: [Object, Array],
       required: true
+    },
+    isSync:{
+      type: Boolean,
+      default:false
+    },
+    leafClick:{
+      type:Function,
+      default:()=>{}
     }
   },
   data() {
@@ -427,9 +435,12 @@ export default {
         isDrag = false
       }
     },
-    onClickNode(index) {
+    async onClickNode(index) {
       if (this.collapseEnabled) {
-        const curNode = this.nodeDataList[index]
+        const curNode = this.nodeDataList[index];
+        if(this.isSync){
+          await this.leafClick(curNode.data._children || curNode.data.children,curNode.data);
+        }
         if (curNode.data.children) {
           curNode.data._children = curNode.data.children
           curNode.data.children = null
