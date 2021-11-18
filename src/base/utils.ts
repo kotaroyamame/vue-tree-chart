@@ -1,6 +1,6 @@
 import * as colorUtil from './color-util';
 
-function text(ctx, text, x: number, y: number, fontSize: any, fontColor: string) {
+function text(ctx:{[key: string]: any}, text: string, x: number, y: number, fontSize: any, fontColor: string) {
 	ctx.font = '14px Arial';
 	ctx.fillStyle = fontColor;
 	ctx.fillText(text, x, y);
