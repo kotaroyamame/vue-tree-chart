@@ -32,39 +32,39 @@
 
 <script>
 import * as d3 from 'd3';
-import { uuid } from '../base/utils';
-import Vue, { VNode } from 'vue'
+import {uuid} from '../base/utils';
+import Vue, {VNode} from 'vue';
 
-const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i
-const MATCH_SCALE_REGEX = /scale\((\S*)\)/i
+const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i;
+const MATCH_SCALE_REGEX = /scale\((\S*)\)/i;
 
 const LinkStyle = {
 	CURVE: 'curve',
-	STRAIGHT: 'straight'
-}
+	STRAIGHT: 'straight',
+};
 
 const DIRECTION = {
 	VERTICAL: 'vertical',
-	HORIZONTAL: 'horizontal'
-}
+	HORIZONTAL: 'horizontal',
+};
 
-const DEFAULT_NODE_WIDTH = 100
-const DEFAULT_NODE_HEIGHT = 100
-const DEFAULT_LEVEL_HEIGHT = 200
+const DEFAULT_NODE_WIDTH = 100;
+const DEFAULT_NODE_HEIGHT = 100;
+const DEFAULT_LEVEL_HEIGHT = 200;
 /**
  * Used to decrement the height of the 'initTransformY' to center diagrams.
  * This is only a hotfix caused by the addition of '__invisible_root' node
  * for multi root purposes.
  */
-const DEFAULT_HEIGHT_DECREMENT = 200
+const DEFAULT_HEIGHT_DECREMENT = 200;
 
-const ANIMATION_DURATION = 800
+const ANIMATION_DURATION = 800;
 
-function rotatePoint({ x, y }) {
+function rotatePoint({x, y}) {
 	return {
 		x: y,
-		y: x
-	}
+		y: x,
+	};
 }
 
 export default Vue.extend({
@@ -76,35 +76,37 @@ export default Vue.extend({
 				return {
 					nodeWidth: DEFAULT_NODE_WIDTH,
 					nodeHeight: DEFAULT_NODE_HEIGHT,
-					levelHeight: DEFAULT_LEVEL_HEIGHT
-				}
-			}
+					levelHeight: DEFAULT_LEVEL_HEIGHT,
+				};
+			},
 		},
 		linkStyle: {
 			type: String,
-			default: LinkStyle.CURVE
+			default: LinkStyle.CURVE,
 		},
 		direction: {
 			type: String,
-			default: DIRECTION.VERTICAL
+			default: DIRECTION.VERTICAL,
 		},
 		collapseEnabled: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		// 展示的层级数据, 样例数据如: hierachical.json
 		dataset: {
 			type: [Object, Array],
-			required: true
+			required: true,
 		},
 		isSync: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		leafClick: {
 			type: Function,
-			default: () => {return []}
-		}
+			default: () => {
+				return [];
+			},
+		},
 	},
 	data() {
 		return {
@@ -115,22 +117,22 @@ export default Vue.extend({
 			initTransformX: 0,
 			initTransformY: 0,
 			DIRECTION,
-			currentScale: 1
-		}
+			currentScale: 1,
+		};
 	},
 	computed: {
 		initialTransformStyle() {
 			return {
 				transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
-				transformOrigin: 'center'
-			}
+				transformOrigin: 'center',
+			};
 		},
 		_dataset() {
-			return this.updatedInternalData(this.dataset)
-		}
+			return this.updatedInternalData(this.dataset);
+		},
 	},
 	mounted() {
-		this.init()
+		this.init();
 	},
 	methods: {
 		init() {
@@ -139,213 +141,213 @@ export default Vue.extend({
 			this.initTransform();
 		},
 		zoomIn() {
-			const originTransformStr = this.$refs.domContainer.style.transform
+			const originTransformStr = this.$refs.domContainer.style.transform;
 			// 如果已有scale属性, 在原基础上修改
-			let targetScale = 1 * 1.2
-			const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX)
+			let targetScale = 1 * 1.2;
+			const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX);
 			if (scaleMatchResult && scaleMatchResult.length > 0) {
-				const originScale = parseFloat(scaleMatchResult[1])
-				targetScale *= originScale
+				const originScale = parseFloat(scaleMatchResult[1]);
+				targetScale *= originScale;
 			}
-			this.setScale(targetScale)
+			this.setScale(targetScale);
 		},
-    initKey(children){
-      for(const child of children){
-        child._key = uuid();
-      }
-      return children;
-    },
-		zoomOut() {
-			const originTransformStr = this.$refs.domContainer.style.transform
-			// 如果已有scale属性, 在原基础上修改
-			let targetScale = 1 / 1.2
-			const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX)
-			if (scaleMatchResult && scaleMatchResult.length > 0) {
-				const originScale = parseFloat(scaleMatchResult[1])
-				targetScale = originScale / 1.2
+		initKey(children) {
+			for (const child of children) {
+				child._key = uuid();
 			}
-			this.setScale(targetScale)
+			return children;
+		},
+		zoomOut() {
+			const originTransformStr = this.$refs.domContainer.style.transform;
+			// 如果已有scale属性, 在原基础上修改
+			let targetScale = 1 / 1.2;
+			const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX);
+			if (scaleMatchResult && scaleMatchResult.length > 0) {
+				const originScale = parseFloat(scaleMatchResult[1]);
+				targetScale = originScale / 1.2;
+			}
+			this.setScale(targetScale);
 		},
 		restoreScale() {
-			this.setScale(1)
+			this.setScale(1);
 		},
 		setScale(scaleNum) {
 			if (typeof scaleNum !== 'number') return;
-			let pos = this.getTranslate();
-			let translateString = `translate(${pos[0]}px, ${pos[1]}px)`
-			this.$refs.svg.style.transform = `scale(${scaleNum}) ` + translateString
+			const pos = this.getTranslate();
+			const translateString = `translate(${pos[0]}px, ${pos[1]}px)`;
+			this.$refs.svg.style.transform = `scale(${scaleNum}) ` + translateString;
 			this.$refs.domContainer.style.transform =
-				`scale(${scaleNum}) ` + translateString
-			this.currentScale = scaleNum
+				`scale(${scaleNum}) ` + translateString;
+			this.currentScale = scaleNum;
 		},
 		getTranslate() {
-			const string = this.$refs.svg.style.transform
-			let match = string.match(MATCH_TRANSLATE_REGEX)
+			const string = this.$refs.svg.style.transform;
+			const match = string.match(MATCH_TRANSLATE_REGEX);
 			if (match === null) {
-				return [null, null]
+				return [null, null];
 			}
-			let x = parseInt(match[1])
-			let y = parseInt(match[2])
-			return [x, y]
+			const x = parseInt(match[1]);
+			const y = parseInt(match[2]);
+			return [x, y];
 		},
 		isVertical() {
-			return this.direction === DIRECTION.VERTICAL
+			return this.direction === DIRECTION.VERTICAL;
 		},
 		/**
 		 * Returns updated dataset by deep copying every nodes from the externalData and adding unique '_key' attributes.
 		 **/
 		updatedInternalData(externalData) {
-			var data = { name: '__invisible_root', children: [] }
-			if (!externalData) return data
+			const data = {name: '__invisible_root', children: []};
+			if (!externalData) return data;
 			if (Array.isArray(externalData)) {
-				for (var i = externalData.length - 1; i >= 0; i--) {
-					data.children.push(this.deepCopy(externalData[i]))
+				for (let i = externalData.length - 1; i >= 0; i--) {
+					data.children.push(this.deepCopy(externalData[i]));
 				}
 			} else {
-				data.children.push(this.deepCopy(externalData))
+				data.children.push(this.deepCopy(externalData));
 			}
-			return data
+			return data;
 		},
 		/**
 		 * Returns a deep copy of selected node (copy of itself and it's children).
 		 * If selected node or it's children have no '_key' attribute it will assign a new one.
 		 **/
 		deepCopy(node) {
-			let obj = { _key: uuid() }
-			for (var key in node) {
+			const obj = {_key: uuid()};
+			for (const key in node) {
 				if (node[key] === null) {
-					obj[key] = null
+					obj[key] = null;
 				} else if (Array.isArray(node[key])) {
-					obj[key] = node[key].map((x) => this.deepCopy(x))
+					obj[key] = node[key].map((x) => this.deepCopy(x));
 				} else if (typeof node[key] === 'object') {
-					obj[key] = this.deepCopy(node[key])
+					obj[key] = this.deepCopy(node[key]);
 				} else {
-					obj[key] = node[key]
+					obj[key] = node[key];
 				}
 			}
-			return obj
+			return obj;
 		},
 		initTransform() {
-			const containerWidth = this.$refs.container.offsetWidth
-			const containerHeight = this.$refs.container.offsetHeight
+			const containerWidth = this.$refs.container.offsetWidth;
+			const containerHeight = this.$refs.container.offsetHeight;
 			if (this.isVertical()) {
-				this.initTransformX = Math.floor(containerWidth / 2)
+				this.initTransformX = Math.floor(containerWidth / 2);
 				this.initTransformY = Math.floor(
-					this.config.nodeHeight - DEFAULT_HEIGHT_DECREMENT
-				)
+					this.config.nodeHeight - DEFAULT_HEIGHT_DECREMENT,
+				);
 			} else {
 				this.initTransformX = Math.floor(
-					this.config.nodeWidth - DEFAULT_HEIGHT_DECREMENT
-				)
-				this.initTransformY = Math.floor(containerHeight / 2)
+					this.config.nodeWidth - DEFAULT_HEIGHT_DECREMENT,
+				);
+				this.initTransformY = Math.floor(containerHeight / 2);
 			}
 		},
 		/**
 		 * 根据link数据,生成svg path data
 		 */
 		generateLinkPath(d) {
-			const self = this
+			const self = this;
 			if (this.linkStyle === LinkStyle.CURVE) {
-				const linkPath = this.isVertical() ? d3.linkVertical() : d3.linkHorizontal()
+				const linkPath = this.isVertical() ? d3.linkVertical() : d3.linkHorizontal();
 				linkPath
-					.x(function (d) {
-						return d.x
+					.x(function(d) {
+						return d.x;
 					})
-					.y(function (d) {
-						return d.y
+					.y(function(d) {
+						return d.y;
 					})
-					.source(function (d) {
+					.source(function(d) {
 						const sourcePoint = {
 							x: d.source.x,
-							y: d.source.y
-						}
-						return self.direction === self.DIRECTION.VERTICAL
-							? sourcePoint
-							: rotatePoint(sourcePoint)
+							y: d.source.y,
+						};
+						return self.direction === self.DIRECTION.VERTICAL ?
+							sourcePoint :
+							rotatePoint(sourcePoint);
 					})
-					.target(function (d) {
+					.target(function(d) {
 						const targetPoint = {
 							x: d.target.x,
-							y: d.target.y
-						}
-						return self.direction === self.DIRECTION.VERTICAL
-							? targetPoint
-							: rotatePoint(targetPoint)
-					})
-				return linkPath(d)
+							y: d.target.y,
+						};
+						return self.direction === self.DIRECTION.VERTICAL ?
+							targetPoint :
+							rotatePoint(targetPoint);
+					});
+				return linkPath(d);
 			}
 			if (this.linkStyle === LinkStyle.STRAIGHT) {
 				// the link path is: source -> secondPoint -> thirdPoint -> target
-				const linkPath = d3.path()
-				let sourcePoint = { x: d.source.x, y: d.source.y }
-				let targetPoint = { x: d.target.x, y: d.target.y }
+				const linkPath = d3.path();
+				let sourcePoint = {x: d.source.x, y: d.source.y};
+				let targetPoint = {x: d.target.x, y: d.target.y};
 				if (!this.isVertical()) {
-					sourcePoint = rotatePoint(sourcePoint)
-					targetPoint = rotatePoint(targetPoint)
+					sourcePoint = rotatePoint(sourcePoint);
+					targetPoint = rotatePoint(targetPoint);
 				}
-				const xOffset = targetPoint.x - sourcePoint.x
-				const yOffset = targetPoint.y - sourcePoint.y
-				const secondPoint = this.isVertical()
-					? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
-					: { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y }
-				const thirdPoint = this.isVertical()
-					? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
-					: { x: sourcePoint.x + xOffset / 2, y: targetPoint.y }
-				linkPath.moveTo(sourcePoint.x, sourcePoint.y)
-				linkPath.lineTo(secondPoint.x, secondPoint.y)
-				linkPath.lineTo(thirdPoint.x, thirdPoint.y)
-				linkPath.lineTo(targetPoint.x, targetPoint.y)
-				return linkPath.toString()
+				const xOffset = targetPoint.x - sourcePoint.x;
+				const yOffset = targetPoint.y - sourcePoint.y;
+				const secondPoint = this.isVertical() ?
+					{x: sourcePoint.x, y: sourcePoint.y + yOffset / 2} :
+					{x: sourcePoint.x + xOffset / 2, y: sourcePoint.y};
+				const thirdPoint = this.isVertical() ?
+					{x: targetPoint.x, y: sourcePoint.y + yOffset / 2} :
+					{x: sourcePoint.x + xOffset / 2, y: targetPoint.y};
+				linkPath.moveTo(sourcePoint.x, sourcePoint.y);
+				linkPath.lineTo(secondPoint.x, secondPoint.y);
+				linkPath.lineTo(thirdPoint.x, thirdPoint.y);
+				linkPath.lineTo(targetPoint.x, targetPoint.y);
+				return linkPath.toString();
 			}
 		},
 		draw() {
-			var [nodeDataList, linkDataList] = this.buildTree(this._dataset)
+			let [nodeDataList, linkDataList] = this.buildTree(this._dataset);
 			// Do not render the invisible root node.
-			nodeDataList.splice(0, 1)
+			nodeDataList.splice(0, 1);
 			linkDataList = linkDataList.filter(
-				(x) => x.source.data.name !== '__invisible_root'
-			)
-			this.linkDataList = linkDataList
-			this.nodeDataList = nodeDataList
-			const identifier = this.dataset['identifier']
-			const specialLinks = this.dataset['links']
+				(x) => x.source.data.name !== '__invisible_root',
+			);
+			this.linkDataList = linkDataList;
+			this.nodeDataList = nodeDataList;
+			const identifier = this.dataset['identifier'];
+			const specialLinks = this.dataset['links'];
 			if (specialLinks && identifier) {
 				for (const link of specialLinks) {
-					let parent,
-						children = undefined
+					let parent;
+					let children = undefined;
 					if (identifier === 'value') {
 						parent = this.nodeDataList.find((d) => {
-							return d[identifier] == link.parent
-						})
+							return d[identifier] == link.parent;
+						});
 						children = this.nodeDataList.filter((d) => {
-							return d[identifier] == link.child
-						})
+							return d[identifier] == link.child;
+						});
 					} else {
 						parent = this.nodeDataList.find((d) => {
-							return d['data'][identifier] == link.parent
-						})
+							return d['data'][identifier] == link.parent;
+						});
 						children = this.nodeDataList.filter((d) => {
-							return d['data'][identifier] == link.child
-						})
+							return d['data'][identifier] == link.child;
+						});
 					}
 					if (parent && children) {
 						for (const child of children) {
 							const new_link = {
 								source: parent,
-								target: child
-							}
-							this.linkDataList.push(new_link)
+								target: child,
+							};
+							this.linkDataList.push(new_link);
 						}
 					}
 				}
 			}
 
-			this.svg = this.d3.select(this.$refs.svg)
+			this.svg = this.d3.select(this.$refs.svg);
 
-			const self = this
+			const self = this;
 			const links = this.svg.selectAll('.link').data(linkDataList, (d) => {
-				return `${d.source.data._key}-${d.target.data._key}`
-			})
+				return `${d.source.data._key}-${d.target.data._key}`;
+			});
 
 			links
 				.enter()
@@ -356,122 +358,122 @@ export default Vue.extend({
 				.ease(d3.easeCubicInOut)
 				.style('opacity', 1)
 				.attr('class', 'link')
-				.attr('d', function (d, i) {
-					return self.generateLinkPath(d)
-				})
+				.attr('d', function(d, i) {
+					return self.generateLinkPath(d);
+				});
 			links
 				.transition()
 				.duration(ANIMATION_DURATION)
 				.ease(d3.easeCubicInOut)
-				.attr('d', function (d) {
-					return self.generateLinkPath(d)
-				})
+				.attr('d', function(d) {
+					return self.generateLinkPath(d);
+				});
 			links
 				.exit()
 				.transition()
 				.duration(ANIMATION_DURATION / 2)
 				.ease(d3.easeCubicInOut)
 				.style('opacity', 0)
-				.remove()
+				.remove();
 		},
 		buildTree(rootNode) {
 			const treeBuilder = this.d3
 				.tree()
-				.nodeSize([this.config.nodeWidth, this.config.levelHeight])
-			const tree = treeBuilder(this.d3.hierarchy(rootNode))
-			return [tree.descendants(), tree.links()]
+				.nodeSize([this.config.nodeWidth, this.config.levelHeight]);
+			const tree = treeBuilder(this.d3.hierarchy(rootNode));
+			return [tree.descendants(), tree.links()];
 		},
 		enableDrag() {
-			const svgElement = this.$refs.svg
-			const container = this.$refs.container
-			let startX = 0
-			let startY = 0
-			let isDrag = false
+			const svgElement = this.$refs.svg;
+			const container = this.$refs.container;
+			let startX = 0;
+			let startY = 0;
+			let isDrag = false;
 			// 保存鼠标点下时的位移
-			let mouseDownTransform = ''
+			let mouseDownTransform = '';
 			container.onmousedown = (event) => {
-				mouseDownTransform = svgElement.style.transform
-				startX = event.clientX
-				startY = event.clientY
-				isDrag = true
-			}
+				mouseDownTransform = svgElement.style.transform;
+				startX = event.clientX;
+				startY = event.clientY;
+				isDrag = true;
+			};
 			container.onmousemove = (event) => {
-				if (!isDrag) return
-				const originTransform = mouseDownTransform
-				let originOffsetX = 0
-				let originOffsetY = 0
+				if (!isDrag) return;
+				const originTransform = mouseDownTransform;
+				let originOffsetX = 0;
+				let originOffsetY = 0;
 				if (originTransform) {
-					const result = originTransform.match(MATCH_TRANSLATE_REGEX)
+					const result = originTransform.match(MATCH_TRANSLATE_REGEX);
 					if (result !== null && result.length !== 0) {
-						const [offsetX, offsetY] = result.slice(1)
-						originOffsetX = parseInt(offsetX)
-						originOffsetY = parseInt(offsetY)
+						const [offsetX, offsetY] = result.slice(1);
+						originOffsetX = parseInt(offsetX);
+						originOffsetY = parseInt(offsetY);
 					}
 				}
-				let newX =
-					Math.floor((event.clientX - startX) / this.currentScale) + originOffsetX
-				let newY =
-					Math.floor((event.clientY - startY) / this.currentScale) + originOffsetY
-				let transformStr = `translate(${newX}px, ${newY}px)`
+				const newX =
+					Math.floor((event.clientX - startX) / this.currentScale) + originOffsetX;
+				const newY =
+					Math.floor((event.clientY - startY) / this.currentScale) + originOffsetY;
+				let transformStr = `translate(${newX}px, ${newY}px)`;
 				if (originTransform) {
-					transformStr = originTransform.replace(MATCH_TRANSLATE_REGEX, transformStr)
+					transformStr = originTransform.replace(MATCH_TRANSLATE_REGEX, transformStr);
 				}
-				svgElement.style.transform = transformStr
-				this.$refs.domContainer.style.transform = transformStr
-			}
+				svgElement.style.transform = transformStr;
+				this.$refs.domContainer.style.transform = transformStr;
+			};
 
 			container.onmouseup = (event) => {
-				startX = 0
-				startY = 0
-				isDrag = false
-			}
+				startX = 0;
+				startY = 0;
+				isDrag = false;
+			};
 		},
 		async onClickNode(index) {
 			if (this.collapseEnabled) {
-				const curNode = this.nodeDataList[index]
+				const curNode = this.nodeDataList[index];
 				if (this.isSync && curNode.data.children == null) {
-					const children = await this.leafClick(this.deepCopy(curNode.data))
+					const children = await this.leafClick(this.deepCopy(curNode.data));
 					curNode.data.children = this.initKey(children);
-					curNode.data._children = null
-					curNode.data._collapsed = false
+					curNode.data._children = null;
+					curNode.data._collapsed = false;
 				} else {
 					if (curNode.data.children) {
-						curNode.data._children = curNode.data.children
-						curNode.data.children = null
-						curNode.data._collapsed = true
+						curNode.data._children = curNode.data.children;
+						curNode.data.children = null;
+						curNode.data._collapsed = true;
 					} else {
-						curNode.data.children = curNode.data._children
-						curNode.data._children = null
-						curNode.data._collapsed = false
+						curNode.data.children = curNode.data._children;
+						curNode.data._children = null;
+						curNode.data._collapsed = false;
 					}
 				}
-				this.draw()
+				this.draw();
 			}
 		},
 		formatDimension(dimension) {
-			if (typeof dimension === 'number') return `${dimension}px`
+			if (typeof dimension === 'number') return `${dimension}px`;
 			if (dimension.indexOf('px') !== -1) {
-				return dimension
+				return dimension;
 			} else {
-				return `${dimension}px`
+				return `${dimension}px`;
 			}
 		},
 		parseDimensionNumber(dimension) {
 			if (typeof dimension === 'number') {
-				return dimension
+				return dimension;
 			}
-			return parseInt(dimension.replace('px', ''))
-		}
+			return parseInt(dimension.replace('px', ''));
+		},
 	},
 	watch: {
 		_dataset: {
 			deep: true,
-			handler: function () {
+			handler: function() {
 				this.draw();
 				this.initTransform();
-			}
-		}
-	}
+			},
+		},
+	},
 });
 </script>
 

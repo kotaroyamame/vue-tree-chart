@@ -1,3 +1,3 @@
-import VueTree from './VueTree.vue'
+import VueTree from './VueTree.vue';
 
-export default VueTree
+export default VueTree;

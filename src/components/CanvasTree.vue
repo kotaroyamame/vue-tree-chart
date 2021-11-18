@@ -25,43 +25,43 @@
 </template>
 
 <script lang="ts">
-import OrgChart from './org-chart'
-import Vue from 'vue'
-import { generateOrgChartData, Data } from '../base/data-generator'
+import OrgChart from './org-chart';
+import Vue from 'vue';
+import {generateOrgChartData, Data} from '../base/data-generator';
 
 export default Vue.extend({
-  name: 'org-chart',
-  data() {
-    return {
-      data: null,
-      orgChart: null,
-      supportActions: [
-        'click node to toggle',
-        'drag canvas',
-        'use mouse wheel to zoom',
-        'button control to zoom'
-      ]
-    }
-  },
-  created() {
-    this.data = generateOrgChartData(10)
-  },
-  mounted() {
-    this.orgChart = new OrgChart()
-    this.orgChart.draw(this.data)
-  },
-  methods: {
-    test() {
-      this.orgChart.draw(this.data)
-    },
-    bigger() {
-      this.orgChart.bigger()
-    },
-    smaller() {
-      this.orgChart.smaller()
-    }
-  }
-})
+	name: 'org-chart',
+	data() {
+		return {
+			data: null,
+			orgChart: null,
+			supportActions: [
+				'click node to toggle',
+				'drag canvas',
+				'use mouse wheel to zoom',
+				'button control to zoom',
+			],
+		};
+	},
+	created() {
+		this.data = generateOrgChartData(10);
+	},
+	mounted() {
+		this.orgChart = new OrgChart();
+		this.orgChart.draw(this.data);
+	},
+	methods: {
+		test() {
+			this.orgChart.draw(this.data);
+		},
+		bigger() {
+			this.orgChart.bigger();
+		},
+		smaller() {
+			this.orgChart.smaller();
+		},
+	},
+});
 </script>
 
 <style scoped>

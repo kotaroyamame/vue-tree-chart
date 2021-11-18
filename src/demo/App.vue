@@ -45,37 +45,37 @@
 </template>
 
 <script lang="ts">
-import * as Cons from './router/constant'
+import * as Cons from './router/constant';
 
 export default {
-  name: 'App',
-  data() {
-    return {
-      Cons,
-      selectedMenu: 'canvas'
-    }
-  },
-  watch: {
-    $route() {
-      this.updateSelectedMenu()
-    }
-  },
-  created() {
-    this.updateSelectedMenu()
-  },
-  methods: {
-    backtoMenu() {
-      this.$router.push('main')
-    },
-    updateSelectedMenu() {
-      if (this.$route.path === `/${Cons.CANVAS_TREE}`) {
-        this.selectedMenu = 'canvas'
-      } else {
-        this.selectedMenu = 'svg'
-      }
-    }
-  }
-}
+	name: 'App',
+	data() {
+		return {
+			Cons,
+			selectedMenu: 'canvas',
+		};
+	},
+	watch: {
+		$route() {
+			this.updateSelectedMenu();
+		},
+	},
+	created() {
+		this.updateSelectedMenu();
+	},
+	methods: {
+		backtoMenu() {
+			this.$router.push('main');
+		},
+		updateSelectedMenu() {
+			if (this.$route.path === `/${Cons.CANVAS_TREE}`) {
+				this.selectedMenu = 'canvas';
+			} else {
+				this.selectedMenu = 'svg';
+			}
+		},
+	},
+};
 </script>
 
 <style lang="less" scoped>

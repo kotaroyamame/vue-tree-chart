@@ -1,26 +1,22 @@
 module.exports = {
-  root: true,
-  env: {
-    'node': true
+  'env': {
+    'browser': true,
+    'es2021': true,
   },
-  extends: [
+  'extends': [
     'plugin:vue/essential',
-    '@vue/typescript',
-    '@vue/prettier',
+    'google',
   ],
-  parserOptions: {
-    ecmaVersion: 2020,
+  'parserOptions': {
+    'ecmaVersion': 13,
+    'parser': '@typescript-eslint/parser',
+    'sourceType': 'module',
   },
-  rules: {
-    'prettier/prettier': [
-      'warn',
-      {
-        '#': 'prettier config in here :)',
-        'singleQuote': true,
-        'semi': false,
-        'trailingComma': 'none',
-        'space-before-function-paren': 'off'
-      }
-    ]
-  }
-}
+  'plugins': [
+    'vue',
+    '@typescript-eslint',
+  ],
+  'rules': {
+			'indent': ['error', 'tab']
+  },
+};

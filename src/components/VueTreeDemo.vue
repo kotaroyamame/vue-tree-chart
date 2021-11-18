@@ -172,182 +172,182 @@
 </template>
 
 <script>
-import VueTree from '../vue-tree/VueTree.vue'
+import VueTree from '../vue-tree/VueTree.vue';
 
 export default {
-  name: 'treemap',
-  components: { 'vue-tree': VueTree },
-  data() {
-    return {
-      sampleData: {
-        value: '1',
-        children: [
-          { value: '2', children: [{ value: '4' }, { value: '5' }] },
-          { value: '3' }
-        ]
-      },
-      richMediaData: {
-        name: 'James',
-        value: 800,
-        avatar:
+	name: 'treemap',
+	components: {'vue-tree': VueTree},
+	data() {
+		return {
+			sampleData: {
+				value: '1',
+				children: [
+					{value: '2', children: [{value: '4'}, {value: '5'}]},
+					{value: '3'},
+				],
+			},
+			richMediaData: {
+				name: 'James',
+				value: 800,
+				avatar:
           'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female3.svg',
-        children: [
-          {
-            name: 'Bob',
-            value: 400,
-            avatar:
+				children: [
+					{
+						name: 'Bob',
+						value: 400,
+						avatar:
               'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male4.svg',
-            children: [
-              {
-                name: 'C1',
-                value: 100,
-                avatar:
-                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female4.svg'
-              },
-              {
-                name: 'C2',
-                value: 300,
-                avatar:
-                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male2.svg'
-              },
-              {
-                name: 'C3',
-                value: 200,
-                avatar:
-                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male3.svg'
-              }
-            ]
-          },
-          {
-            name: 'Smith',
-            value: 200,
-            avatar:
+						children: [
+							{
+								name: 'C1',
+								value: 100,
+								avatar:
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female4.svg',
+							},
+							{
+								name: 'C2',
+								value: 300,
+								avatar:
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male2.svg',
+							},
+							{
+								name: 'C3',
+								value: 200,
+								avatar:
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male3.svg',
+							},
+						],
+					},
+					{
+						name: 'Smith',
+						value: 200,
+						avatar:
               'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male3.svg',
-            children: [
-              {
-                name: 'S1',
-                value: 230,
-                avatar:
-                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female1.svg'
-              }
-            ]
-          },
-          {
-            name: 'Jackson',
-            value: 300,
-            avatar:
-              'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female3.svg'
-          }
-        ]
-      },
-      vehicules: {
-        name: 'Wheels',
-        children: [
-          {
-            name: 'Wings',
-            children: [
-              {
-                name: 'Plane'
-              }
-            ]
-          },
-          {
-            name: 'Piston',
-            customID: 3
-          },
-          {
-            name: 'Carburetor',
-            children: [
-              {
-                name: 'Truck',
-                customID: 2
-              },
-              {
-                name: 'Car',
-                customID: 2
-              }
-            ]
-          },
-          {
-            name: 'Valve',
-            customID: 4
-          },
-          {
-            name: 'Crankshaft',
-            customID: 1
-          }
-        ],
-        links: [
-          { parent: 1, child: 2 },
-          { parent: 3, child: 2 },
-          { parent: 4, child: 2 }
-        ],
-        identifier: 'customID'
-      },
-      clicked: false,
-      multiRoot1: [
-        {
-          name: 'Wheels',
-          children: [
-            {
-              name: 'Wings',
-              children: [
-                {
-                  name: 'Plane'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          name: 'Wings',
-          children: [
-            {
-              name: 'Plane'
-            }
-          ]
-        }
-      ],
-      multiRoot2: {
-        name: 'Carburetor',
-        children: [
-          {
-            name: 'Truck',
-            customID: 2
-          },
-          {
-            name: 'Car',
-            customID: 2
-          }
-        ]
-      },
-      treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
-    }
-  },
-  computed: {
-    multiRootChoice() {
-      if (this.clicked) {
-        return this.multiRoot2
-      }
-      return this.multiRoot1
-    }
-  },
-  methods: {
-    controlScale(command) {
-      switch (command) {
-        case 'bigger':
-          this.$refs.scaleTree.zoomIn()
-          break
-        case 'smaller':
-          this.$refs.scaleTree.zoomOut()
-          break
-        case 'restore':
-          this.$refs.scaleTree.restoreScale()
-          break
-      }
-    }
-  }
-}
+						children: [
+							{
+								name: 'S1',
+								value: 230,
+								avatar:
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female1.svg',
+							},
+						],
+					},
+					{
+						name: 'Jackson',
+						value: 300,
+						avatar:
+              'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female3.svg',
+					},
+				],
+			},
+			vehicules: {
+				name: 'Wheels',
+				children: [
+					{
+						name: 'Wings',
+						children: [
+							{
+								name: 'Plane',
+							},
+						],
+					},
+					{
+						name: 'Piston',
+						customID: 3,
+					},
+					{
+						name: 'Carburetor',
+						children: [
+							{
+								name: 'Truck',
+								customID: 2,
+							},
+							{
+								name: 'Car',
+								customID: 2,
+							},
+						],
+					},
+					{
+						name: 'Valve',
+						customID: 4,
+					},
+					{
+						name: 'Crankshaft',
+						customID: 1,
+					},
+				],
+				links: [
+					{parent: 1, child: 2},
+					{parent: 3, child: 2},
+					{parent: 4, child: 2},
+				],
+				identifier: 'customID',
+			},
+			clicked: false,
+			multiRoot1: [
+				{
+					name: 'Wheels',
+					children: [
+						{
+							name: 'Wings',
+							children: [
+								{
+									name: 'Plane',
+								},
+							],
+						},
+					],
+				},
+				{
+					name: 'Wings',
+					children: [
+						{
+							name: 'Plane',
+						},
+					],
+				},
+			],
+			multiRoot2: {
+				name: 'Carburetor',
+				children: [
+					{
+						name: 'Truck',
+						customID: 2,
+					},
+					{
+						name: 'Car',
+						customID: 2,
+					},
+				],
+			},
+			treeConfig: {nodeWidth: 120, nodeHeight: 80, levelHeight: 200},
+		};
+	},
+	computed: {
+		multiRootChoice() {
+			if (this.clicked) {
+				return this.multiRoot2;
+			}
+			return this.multiRoot1;
+		},
+	},
+	methods: {
+		controlScale(command) {
+			switch (command) {
+			case 'bigger':
+				this.$refs.scaleTree.zoomIn();
+				break;
+			case 'smaller':
+				this.$refs.scaleTree.zoomOut();
+				break;
+			case 'restore':
+				this.$refs.scaleTree.restoreScale();
+				break;
+			}
+		},
+	},
+};
 </script>
 
 <style scoped lang="less">
