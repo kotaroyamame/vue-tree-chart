@@ -101,6 +101,12 @@ export default Vue.extend({
 			type: Boolean,
 			default: false,
 		},
+		nodeClick: {
+			type: Function,
+			default: () => {
+
+			},
+		},
 		leafClick: {
 			type: Function,
 			default: () => {
@@ -431,6 +437,7 @@ export default Vue.extend({
 		async onClickNode(index) {
 			if (this.collapseEnabled) {
 				const curNode = this.nodeDataList[index];
+				this.nodeClick(curNode.data);
 				if (this.isSync && curNode.data.children == null) {
 					const children = await this.leafClick(this.deepCopy(curNode.data));
 					curNode.data.children = this.initKey(children);
