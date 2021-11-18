@@ -429,7 +429,7 @@ export default Vue.extend({
 		async onClickNode(index) {
 			if (this.collapseEnabled) {
 				const curNode = this.nodeDataList[index]
-				if (this.isSync && curNode.data.children === null) {
+				if (this.isSync && curNode.data.children == null) {
 					const children = await this.leafClick(this.deepCopy(curNode.data))
 					debugger
 					curNode.data.children = this.initKey(children);
