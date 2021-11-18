@@ -431,7 +431,6 @@ export default Vue.extend({
 				const curNode = this.nodeDataList[index]
 				if (this.isSync && curNode.data.children == null) {
 					const children = await this.leafClick(this.deepCopy(curNode.data))
-					debugger
 					curNode.data.children = this.initKey(children);
 					curNode.data._children = null
 					curNode.data._collapsed = false
