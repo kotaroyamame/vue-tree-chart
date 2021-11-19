@@ -221,6 +221,10 @@ export default Vue.extend({
 		deepCopy(node) {
 			const obj = {_key: uuid()};
 			for (const key in node) {
+				if(key==='data'){
+					obj[key] = node[key];
+					continue;
+				}
 				if (node[key] === null) {
 					obj[key] = null;
 				} else if (Array.isArray(node[key])) {
