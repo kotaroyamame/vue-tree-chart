@@ -275,7 +275,7 @@ export default Vue.extend<{}, any, any, any>({
 					})
 					.source((d:any): any => {
 						const sourcePoint = {
-							x: d.source.x,
+							x: d.source.x+Math.floor(Math.random()*30),
 							y: d.source.y,
 						};
 						return self.direction === self.DIRECTION.VERTICAL ?
@@ -284,7 +284,7 @@ export default Vue.extend<{}, any, any, any>({
 					})
 					.target((d:any): any => {
 						const targetPoint = {
-							x: d.target.x,
+							x: d.target.x+Math.floor(Math.random()*30),
 							y: d.target.y,
 						};
 						return self.direction === self.DIRECTION.VERTICAL ?
@@ -325,12 +325,12 @@ export default Vue.extend<{}, any, any, any>({
 
 				(x: any) => x.source.data.name !== '__invisible_root',
 			);
-			this.linkDataList = linkDataList;
-			// this.linkDataList = [];
-			// for (const linkData of linkDataList) {
-			// 	this.linkDataList.push(linkData);
-			// 	this.linkDataList.push(linkData);
-			// }
+			// this.linkDataList = linkDataList;
+			this.linkDataList = [];
+			for (const linkData of linkDataList) {
+				this.linkDataList.push(linkData);
+				this.linkDataList.push(linkData);
+			}
 			this.nodeDataList = nodeDataList;
 			const identifier = this.dataset['identifier'];
 			const specialLinks = this.dataset['links'];
@@ -370,9 +370,11 @@ export default Vue.extend<{}, any, any, any>({
 
 			const self = this;
 
-			const links = this.svg.selectAll('.link').data(linkDataList, (d: any) => {
-				return `${d.source.data._key}-${d.target.data._key}`;
+			const links = this.svg.selectAll('.link').data(this.linkDataList, (d: any,i:any) => {
+console.log(i);
+				return `${d.source.data._key}-${d.target.data._key}-${i}`;
 			});
+debugger;
 			links
 				.enter()
 				.append('path')
