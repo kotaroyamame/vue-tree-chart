@@ -267,13 +267,13 @@ export default Vue.extend<{}, any, any, any>({
 			if (this.linkStyle === LinkStyle.CURVE) {
 				const linkPath = this.isVertical() ? d3.linkVertical() : d3.linkHorizontal();
 				linkPath
-					.x(() => {
+					.x((d:any) => {
 						return d.x;
 					})
-					.y(() => {
+					.y((d:any) => {
 						return d.y;
 					})
-					.source((): any => {
+					.source((d:any): any => {
 						const sourcePoint = {
 							x: d.source.x,
 							y: d.source.y,
@@ -282,7 +282,7 @@ export default Vue.extend<{}, any, any, any>({
 							sourcePoint :
 							rotatePoint(sourcePoint);
 					})
-					.target((): any => {
+					.target((d:any): any => {
 						const targetPoint = {
 							x: d.target.x,
 							y: d.target.y,
@@ -325,12 +325,12 @@ export default Vue.extend<{}, any, any, any>({
 
 				(x: any) => x.source.data.name !== '__invisible_root',
 			);
-			// this.linkDataList = linkDataList;
-			this.linkDataList = [];
-			for (const linkData of linkDataList) {
-				this.linkDataList.push(linkData);
-				this.linkDataList.push(linkData);
-			}
+			this.linkDataList = linkDataList;
+			// this.linkDataList = [];
+			// for (const linkData of linkDataList) {
+			// 	this.linkDataList.push(linkData);
+			// 	this.linkDataList.push(linkData);
+			// }
 			this.nodeDataList = nodeDataList;
 			const identifier = this.dataset['identifier'];
 			const specialLinks = this.dataset['links'];
@@ -373,7 +373,6 @@ export default Vue.extend<{}, any, any, any>({
 			const links = this.svg.selectAll('.link').data(linkDataList, (d: any) => {
 				return `${d.source.data._key}-${d.target.data._key}`;
 			});
-			debugger;
 			links
 				.enter()
 				.append('path')
@@ -387,8 +386,6 @@ export default Vue.extend<{}, any, any, any>({
 				})
 				.attr('class', 'link')
 				.attr('d', function (d: any, i: number) {
-					console.log(self.generateLinkPath(d));
-					debugger;
 					return self.generateLinkPath(d);
 				});
 			links
