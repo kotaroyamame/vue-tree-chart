@@ -330,6 +330,7 @@ export default Vue.extend<{}, any, any, any>({
 			for (const linkData of linkDataList) {
 				this.linkDataList.push(linkData);
 				this.linkDataList.push(linkData);
+// ここでリンクの設定を行う
 			}
 			this.nodeDataList = nodeDataList;
 			const identifier = this.dataset['identifier'];
@@ -372,7 +373,7 @@ export default Vue.extend<{}, any, any, any>({
 
 			const links = this.svg.selectAll('.link').data(this.linkDataList, (d: any,i:any) => {
 console.log(i);
-				return `${d.source.data._key}-${d.target.data._key}-${i}`;
+				return `${d.source.data._key}-${d.target.data._key}`;
 			});
 debugger;
 			links
@@ -383,7 +384,9 @@ debugger;
 				.duration(ANIMATION_DURATION)
 				.ease(d3.easeCubicInOut)
 				.style('opacity', 1)
-				.style('stroke', () => {
+				.style('stroke', (d:any) => {
+console.log(d);
+debugger;
 					return "hsl(" + Math.random() * 360 + ",100%,50%) "
 				})
 				.attr('class', 'link')
