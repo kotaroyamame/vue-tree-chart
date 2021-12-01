@@ -16,7 +16,8 @@ export namespace VueTreeChart {
 			[key: string]: string;
 		}
 	}
-	export interface INode extends DataSet{
+	export interface INode{
+		data: DataSet;
 		depth: number;
 		height: number;
 		parent: INode;
@@ -25,6 +26,7 @@ export namespace VueTreeChart {
 	}
 	export interface ILinkData {
 		source: INode;
-		target: INode
+		target: INode;
+		style?: {[key:string]:string};
 	}
 }
