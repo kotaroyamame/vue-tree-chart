@@ -234,7 +234,7 @@ export default class VueTree extends Vue {
 	deepCopy(node: any) {
 		const obj: any = { _key: uuid() };
 		for (const key in node) {
-			if (key === 'data') {
+			if (key === 'data'||key === 'dataIdList') {
 				obj[key] = node[key];
 				continue;
 			}
@@ -334,10 +334,16 @@ export default class VueTree extends Vue {
 		// this.linkDataList = linkDataList;
 		this.linkDataList = [];
 		for (const linkData of linkDataList) {
-			this.linkDataList.push(linkData);
-			this.linkDataList.push(linkData);
-
-			// ここでリンクの設定を行う
+			if (Array.isArray(linkData.source.data.dataIdList) && Array.isArray(linkData.target.data.dataIdList)) {
+				const linkIdList = linkData.source.data.dataIdList.filter(dataId => linkData.target.data.dataIdList?.find(tId => tId === dataId));
+				// linkData.style={};
+				for (const linkId of linkIdList) {
+					linkData.style = this.linkStyleIdMap[linkId] || null;
+					this.linkDataList.push(linkData);
+				}
+			} else {
+				this.linkDataList.push(linkData);
+			}
 		}
 		this.nodeDataList = nodeDataList;
 		const identifier = this.dataset['identifier'];
@@ -392,7 +398,10 @@ export default class VueTree extends Vue {
 			.style('opacity', 1)
 			.style('stroke', (d: any) => {
 				console.log(d);
-				return "hsl(" + Math.random() * 360 + ",100%,50%) "
+				if(d.style?.['stroke']){
+					return d.style?.['stroke'];
+				}
+				return "hsl(" + 10 + ",100%,50%) "
 			})
 			.attr('class', 'link')
 			.attr('d', function (d: any, i: number) {
