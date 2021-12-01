@@ -31,7 +31,7 @@ import * as d3 from 'd3';
 import { uuid } from '../base/utils';
 // import Vue, { VNode, PropType } from 'vue';
 import { VueTreeChart } from './types';
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i;
 const MATCH_SCALE_REGEX = /scale\((\S*)\)/i;
 
@@ -138,13 +138,13 @@ export default class VueTree extends Vue {
 	currentScale = 1;
 
 
-	initialTransformStyle() {
+	get initialTransformStyle() {
 		return {
 			transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
 			transformOrigin: 'center',
 		};
 	};
-	_dataset(): VueTreeChart.DataSet | Array<VueTreeChart.DataSet> {
+	get _dataset(): VueTreeChart.DataSet | Array<VueTreeChart.DataSet> {
 		return this.updatedInternalData(this.dataset);
 	};
 	mounted() {
