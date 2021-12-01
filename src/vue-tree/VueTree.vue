@@ -339,7 +339,7 @@ export default class VueTree extends Vue {
 				// linkData.style={};
 				for (const linkId of linkIdList) {
 					linkData.style = this.linkStyleIdMap[linkId] || null;
-					this.linkDataList.push(linkData);
+					this.linkDataList.push({...linkData});
 				}
 			} else {
 				this.linkDataList.push(linkData);
@@ -386,7 +386,7 @@ export default class VueTree extends Vue {
 
 		const links = this.svg.selectAll('.link').data(this.linkDataList, (d: any, i: any) => {
 			console.log(i);
-			return `${d.source.data._key}-${d.target.data._key}`;
+			return `${d.source.data._key}-${d.target.data._key}-${i}`;
 		});
 		links
 			.enter()
