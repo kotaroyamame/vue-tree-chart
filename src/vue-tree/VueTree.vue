@@ -335,7 +335,7 @@ export default class VueTree extends Vue {
 		this.linkDataList = [];
 		for (const linkData of linkDataList) {
 			if (Array.isArray(linkData.source.data.dataIdList) && Array.isArray(linkData.target.data.dataIdList)) {
-				const linkIdList = linkData.source.data.dataIdList.filter(dataId => linkData.target.data.dataIdList?.find(tId => tId === dataId));
+				const linkIdList = linkData.source.data.dataIdList.filter(dataId => linkData.target.data.dataIdList?.find(tId => tId === dataId)!==undefined);
 				// linkData.style={};
 				for (const linkId of linkIdList) {
 					linkData.style = this.linkStyleIdMap[linkId] || null;
