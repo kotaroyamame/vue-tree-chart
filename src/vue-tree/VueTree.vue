@@ -155,10 +155,10 @@ export default class VueTree extends Vue {
 		this.enableDrag();
 		this.initTransform();
 	};
-	zoomIn() {
+	zoomIn(scale=1.2) {
 		const originTransformStr = this.$refs.domContainer.style.transform;
 		// 如果已有scale属性, 在原基础上修改
-		let targetScale = 1 * 1.2;
+		let targetScale = 1 * scale;
 		const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX);
 		if (scaleMatchResult && scaleMatchResult.length > 0) {
 			const originScale = parseFloat(scaleMatchResult[1]);
@@ -172,14 +172,14 @@ export default class VueTree extends Vue {
 		}
 		return children;
 	};
-	zoomOut() {
+	zoomOut(scale=1.2) {
 		const originTransformStr = this.$refs.domContainer.style.transform;
 		// 如果已有scale属性, 在原基础上修改
-		let targetScale = 1 / 1.2;
+		let targetScale = 1 / scale;
 		const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX);
 		if (scaleMatchResult && scaleMatchResult.length > 0) {
 			const originScale = parseFloat(scaleMatchResult[1]);
-			targetScale = originScale / 1.2;
+			targetScale = originScale / scale;
 		}
 		this.setScale(targetScale);
 	};
