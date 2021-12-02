@@ -403,6 +403,13 @@ export default class VueTree extends Vue {
 				}
 				return "hsl(" + 10 + ",100%,50%) "
 			})
+			.style('stroke-dasharray', (d: any) => {
+				console.log(d);
+				if(d.style?.['stroke-dasharray']){
+					return d.style?.['stroke-dasharray'];
+				}
+				return ""
+			})
 			.attr('class', 'link')
 			.attr('d', function (d: any, i: number) {
 				return self.generateLinkPath(d);
