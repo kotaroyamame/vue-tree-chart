@@ -122,10 +122,12 @@ export default {
     return {
       sampleData: {
         value: '1',
+								data:{},
         children: [
-          { value: '2', children: [{ value: '4' }, { value: '5' }] },
-          { value: '3' }
-        ]
+          { value: '2',data:{}, children: [{ value: '4', data:{} }, { value: '5', data:{} }] },
+          { value: '3', data:{} }
+        ],
+								linkIds:[]
       },
       treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
     }
@@ -153,6 +155,19 @@ export default {
 ```
 
 </details>
+
+## dataset
+
+```TypeScript
+
+interface DataSet {
+		data: any;
+		children?: Array<DataSet>;
+		value: string;
+		dataIdList?: Array<string>;
+	}
+```
+
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprwtbw6sj30oc0hrq2t.jpg)
 
