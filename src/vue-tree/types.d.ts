@@ -28,5 +28,6 @@ export namespace VueTreeChart {
 		source: INode;
 		target: INode;
 		style?: {[key:string]:string};
+		posX:number;
 	}
 }
