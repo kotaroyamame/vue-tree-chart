@@ -256,7 +256,7 @@ export default class VueTree extends Vue {
 		if (this.isVertical()) {
 			this.initTransformX = Math.floor(containerWidth / 2);
 			this.initTransformY = Math.floor(
-				this.config.nodeHeight - DEFAULT_HEIGHT_DECREMENT,
+				containerHeight/5 //this.config.nodeHeight// - DEFAULT_HEIGHT_DECREMENT,
 			);
 		} else {
 			this.initTransformX = Math.floor(
