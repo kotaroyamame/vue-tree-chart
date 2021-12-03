@@ -131,7 +131,7 @@ export default class VueTree extends Vue {
 	// LindDataList: Array<{
 	//   source: Node;
 	//   target: Node;
-	linkDataList: Array<any> = [];
+	linkDataList: Array<VueTreeChart.ILinkData> = [];
 	initTransformX = 0;
 	initTransformY = 0;
 	DIRECTION = DIRECTION;
@@ -281,7 +281,7 @@ export default class VueTree extends Vue {
 				})
 				.source((d: any): any => {
 					const sourcePoint = {
-						x: d.source.x + Math.floor(Math.random() * 30),
+						x: d.source.x + parseInt(d.posX||0)*4,
 						y: d.source.y,
 					};
 					return self.direction === self.DIRECTION.VERTICAL ?
@@ -289,8 +289,9 @@ export default class VueTree extends Vue {
 						rotatePoint(sourcePoint);
 				})
 				.target((d: any): any => {
+
 					const targetPoint = {
-						x: d.target.x + Math.floor(Math.random() * 30),
+						x: d.target.x + parseInt(d.posX||0)*4,
 						y: d.target.y,
 					};
 					return self.direction === self.DIRECTION.VERTICAL ?
@@ -337,8 +338,11 @@ export default class VueTree extends Vue {
 			if (Array.isArray(linkData.source.data.dataIdList) && Array.isArray(linkData.target.data.dataIdList)) {
 				const linkIdList = linkData.source.data.dataIdList.filter(dataId => linkData.target.data.dataIdList?.find(tId => tId === dataId)!==undefined);
 				// linkData.style={};
+
+				let pos = 0-Math.round(linkIdList.length/2);
 				for (const linkId of linkIdList) {
-					linkData.style = this.linkStyleIdMap[linkId] || null;
+					linkData.style = this.linkStyleIdMap[linkId] || {};
+					linkData.posX = pos++;
 					this.linkDataList.push({...linkData});
 				}
 			} else {
