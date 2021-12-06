@@ -15,7 +15,11 @@
 						height: formatDimension(config.nodeHeight)
 					}"
 				>
-					<slot name="node" v-bind:node="node.data" v-bind:collapsed="node.data._collapsed">
+					<slot
+						name="node"
+						v-bind:node="node.data"
+						v-bind:collapsed="node.data._collapsed"
+					>
 						<!-- 默认展示value字段 -->
 						<span>{{ node.data.value }}</span>
 					</slot>
@@ -105,7 +109,7 @@ export default class VueTree extends Vue {
 		type: [Object, Array],
 		required: true,
 	})
-	dataset!: any;
+	dataset!: VueTreeChart.DataSet|Array<VueTreeChart.DataSet>;
 	@Prop({
 		type: Boolean,
 		default: false
@@ -150,12 +154,12 @@ export default class VueTree extends Vue {
 	mounted() {
 		this.init();
 	};
-	init() {
+	init():void {
 		this.draw();
 		this.enableDrag();
 		this.initTransform();
 	};
-	zoomIn(scale=1.2) {
+	zoomIn(scale=1.2):void {
 		const originTransformStr = this.$refs.domContainer.style.transform;
 		// 如果已有scale属性, 在原基础上修改
 		let targetScale = 1 * scale;
@@ -172,7 +176,7 @@ export default class VueTree extends Vue {
 		}
 		return children;
 	};
-	zoomOut(scale=1.2) {
+	zoomOut(scale=1.2):void {
 		const originTransformStr = this.$refs.domContainer.style.transform;
 		// 如果已有scale属性, 在原基础上修改
 		let targetScale = 1 / scale;
@@ -268,7 +272,7 @@ export default class VueTree extends Vue {
 	/**
 		* 根据link数据,生成svg path data
 		*/
-	generateLinkPath(d: any) {
+	generateLinkPath(d: any):string {
 		const self = this;
 		if (this.linkStyle === LinkStyle.CURVE) {
 			const linkPath = this.isVertical() ? d3.linkVertical() : d3.linkHorizontal();
@@ -323,6 +327,7 @@ export default class VueTree extends Vue {
 			linkPath.lineTo(targetPoint.x, targetPoint.y);
 			return linkPath.toString();
 		}
+		return "";
 	}
 	draw(): void {
 		let [nodeDataList, linkDataList] = this.buildTree(this._dataset);
