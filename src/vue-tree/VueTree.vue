@@ -302,7 +302,7 @@ export default class VueTree extends Vue {
 						targetPoint :
 						rotatePoint(targetPoint);
 				});
-			return linkPath(d);
+			return linkPath(d)||"";
 		}
 		if (this.linkStyle === LinkStyle.STRAIGHT) {
 			// the link path is: source -> secondPoint -> thirdPoint -> target
@@ -355,7 +355,7 @@ export default class VueTree extends Vue {
 			}
 		}
 		this.nodeDataList = nodeDataList;
-		if(Array.isArray(this.dataset)){
+		if(!Array.isArray(this.dataset)){
 			const identifier = this.dataset['identifier'];
 			const specialLinks = this.dataset['links'];
 			if (specialLinks && identifier) {
