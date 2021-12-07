@@ -3,7 +3,8 @@ export namespace VueTreeChart {
 		data: any;
 		children?: Array<DataSet>;
 		value: string;
-
+		identifier?: any;
+		specialLinks?:Array<any>;
 		dataIdList?: Array<string>;
 		_key: string;
 		_callapsed: boolean;
@@ -24,7 +25,7 @@ export namespace VueTreeChart {
 		x: number;
 		y: number;
 	}
-	export interface ILinkData {
+	export interface ILinkData{
 		source: INode;
 		target: INode;
 		style?: {[key:string]:string};

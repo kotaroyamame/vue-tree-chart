@@ -272,10 +272,10 @@ export default class VueTree extends Vue {
 	/**
 		* 根据link数据,生成svg path data
 		*/
-	generateLinkPath(d: any):string {
+	generateLinkPath(d: VueTreeChart.ILinkData):string {
 		const self = this;
 		if (this.linkStyle === LinkStyle.CURVE) {
-			const linkPath = this.isVertical() ? d3.linkVertical() : d3.linkHorizontal();
+			const linkPath: d3.Link<any,any,any> = this.isVertical() ? d3.linkVertical() : d3.linkHorizontal();
 			linkPath
 				.x((d: any) => {
 					return d.x;
@@ -355,40 +355,41 @@ export default class VueTree extends Vue {
 			}
 		}
 		this.nodeDataList = nodeDataList;
-		const identifier = this.dataset['identifier'];
-		const specialLinks = this.dataset['links'];
-		if (specialLinks && identifier) {
-			for (const link of specialLinks) {
-				let parent;
-				let children = undefined;
-				if (identifier === 'value') {
+		if(Array.isArray(this.dataset)){
+			const identifier = this.dataset['identifier'];
+			const specialLinks = this.dataset['links'];
+			if (specialLinks && identifier) {
+				for (const link of specialLinks) {
+					let parent;
+					let children = undefined;
+					if (identifier === 'value') {
 
-					parent = this.nodeDataList.find((d: any) => {
-						return d[identifier] == link.parent;
-					});
-					children = this.nodeDataList.filter((d: any) => {
-						return d[identifier] == link.child;
-					});
-				} else {
-					parent = this.nodeDataList.find((d: any) => {
-						return d['data'][identifier] == link.parent;
-					});
-					children = this.nodeDataList.filter((d: any) => {
-						return d['data'][identifier] == link.child;
-					});
-				}
-				if (parent && children) {
-					for (const child of children) {
-						const new_link = {
-							source: parent,
-							target: child,
-						};
-						this.linkDataList.push(new_link);
+						parent = this.nodeDataList.find((d: any) => {
+							return d[identifier] == link.parent;
+						});
+						children = this.nodeDataList.filter((d: any) => {
+							return d[identifier] == link.child;
+						});
+					} else {
+						parent = this.nodeDataList.find((d: any) => {
+							return d['data'][identifier] == link.parent;
+						});
+						children = this.nodeDataList.filter((d: any) => {
+							return d['data'][identifier] == link.child;
+						});
+					}
+					if (parent && children) {
+						for (const child of children) {
+							const new_link = {
+								source: parent,
+								target: child,
+							};
+							this.linkDataList.push(new_link);
+						}
 					}
 				}
 			}
 		}
-
 		this.svg = this.d3.select(this.$refs.svg);
 
 		const self = this;
