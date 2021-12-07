@@ -4,7 +4,7 @@ export namespace VueTreeChart {
 		children?: Array<DataSet>;
 		value: string;
 		identifier?: any;
-		specialLinks?:Array<any>;
+		links?:Array<any>;
 		dataIdList?: Array<string>;
 		_key: string;
 		_callapsed: boolean;
