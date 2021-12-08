@@ -171,6 +171,19 @@ interface DataSet {
 
 ### nodeSelect
 
+```
+nodeSelect(dataset:DataSet):Array<DataSet>;
+```
+You can handle the event when you click on an element of a node.
+Example
+```
+<vue-tree
+		style="width: 1000px; height: 600px; border: 1px solid gray;"
+		:dataset="richMediaData"
+		:config="treeConfig"
+		@nodeSlelect="anyFunction"
+></vue-tree>
+```
 ### nodeClick
 
 
