@@ -128,7 +128,7 @@ export default class VueTree extends Vue {
 
 		},
 	})
-	leafClick!: Function;
+	nodeSelect!: Function;
 	d3 = d3;
 	colors = '568FE1';
 	nodeDataList = [];
@@ -496,7 +496,7 @@ export default class VueTree extends Vue {
 			const curNode: any = this.nodeDataList[index];
 			this.nodeClick(curNode.data);
 			if (this.isSync && curNode.data.children == null) {
-				const children = await this.leafClick(this.deepCopy(curNode.data));
+				const children = await this.nodeSelect(this.deepCopy(curNode.data));
 				curNode.data.children = this.initKey(children);
 				curNode.data._children = null;
 				curNode.data._collapsed = false;

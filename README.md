@@ -167,6 +167,11 @@ interface DataSet {
 		dataIdList?: Array<string>;
 	}
 ```
+## Event
+
+### nodeSelect
+
+### nodeClick
 
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprwtbw6sj30oc0hrq2t.jpg)
