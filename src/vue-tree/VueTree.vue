@@ -528,7 +528,7 @@ export default class VueTree extends Vue {
 		}
 		return parseInt(dimension.replace('px', ''));
 	}
-	@Watch("_dataset", { deep: true })
+	@Watch("dataset", { deep: true })
 	changeDataset(): void {
 		this.draw();
 		this.initTransform();
